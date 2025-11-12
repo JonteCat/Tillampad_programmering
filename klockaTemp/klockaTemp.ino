@@ -1,7 +1,7 @@
 /*
 * Name: övningsprojekt
 * Author: Jonathan Wiklund
-* Date: 2025-11-07
+* Date: 2025-11-12
 * Description: This project uses a ds3231 to measure time and displays the time to an 1306 oled display, 
 * Further, it measures temprature with ds3231 and displays a mapped value to a 9g-servo-motor.
 */
