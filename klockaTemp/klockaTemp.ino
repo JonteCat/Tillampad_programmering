@@ -15,9 +15,10 @@
 
 
 // Init constants
-int x0 = 128 / 2;
+int x0 = (128 / 2) + 20;
 int y0 = 64 / 2;
 float pi = 3.14159265359;
+int r = 30;
 // Init global variables
 
 // Construct objects
@@ -114,7 +115,6 @@ void oledWrite(String time) {
 void analogClock() {
   DateTime now = rtc.now();
 
-  int r = 30;
   int angleSecond = (360/60)*now.second();
   int angleMinute = (360/60)*now.minute();
   int angleHour = (360/12)*now.hour();
