@@ -1,60 +1,159 @@
 require 'ruby2d'
 
 #Window settings 
-set title: "Puzze game", 
+set title: "Puzzle game", 
 fullscreen: false,
-background: 'black',
-width: 640,
-height: 480,
+background: [0.5,0.5,0.5,0],
+width: 800,
 viewport_width: 640,
 viewport_height: 480
 
-#Player settings
-player_speed = 5
 
 
+set height: Window.width*3/4
+  SIZE = Window.width/20
+
+
+@move_xy = SIZE
+
+def player_move(axis, move_axis, window_max, window_min)
+  if axis < window_max || axis > window_min
+    return axis = move_axis
+  end
+end
+
+'''def player_outside_window(axis, window_max, window_min)
+  if axis > window_max || axis < window_min
+    axis = axis
+  end
+end'''
 
 Square.new(
     x: 50, y:50,
-    size:50,
+    size:SIZE,
     color: "white",
     z:10
 )
 
 # Define a square shape.
-@player = Square.new(x: 10, y: 20, size: 25, color: 'blue')
 
-# Define the initial speed (and direction).
-@x_speed = 0
-@y_speed = 0
+class Player
+  #Player settings
 
-# Define what happens when a specific key is pressed.
-# Each keypress influences on the  movement along the x and y axis.
-on :key_held do |event|
-  if event.key == 'a'
-    @x_speed = -player_speed
-    @y_speed = 0
-  elsif event.key == 'd'
-    @x_speed = player_speed
-    @y_speed = 0
-  elsif event.key == 'w'
-    @x_speed = 0
-    @y_speed = -player_speed
-  elsif event.key == 's'
-    @x_speed = 0
-    @y_speed = player_speed
-  else
-    @x_speed = 0
-    @y_speed = 0
+  attr_accessor :hitbox, :move_x, :move_y
+
+  def initialize()
+    @hitbox = Square.new(x: SIZE*4, y: SIZE*3, size: SIZE, color: 'blue', z: 500)
+    @move_x = 0
+    @move_y = 0
   end
+
+
+  def update()
+    if Window.frames % 10 == 0
+      @hitbox.x += @move_x * SIZE
+      @hitbox.y += @move_y * SIZE
+    end
+  end
+
+
+  
+end
+
+
+@player = Player.new()
+
+tick = 0
+
+'''
+on :key_held do |event|
+  if tick >= 10
+    if event.key == "a"
+      @player.hitbox.x -= @move_xy
+    elsif event.key == "d"
+      @player.hitbox.x += @move_xy
+    elsif event.key == "w"
+      @player.hitbox.y -= @move_xy
+    elsif event.key == "s"
+      @player.hitbox.y += @move_xy
+    elsif event.key == "b"
+      exit
+
+    end
+    tick = 0
+  end
+  tick += 1
+end
+
+$key = nil
+'''
+
+
+on :key_held do |event|
+  if @player.move_x == 0 && @player.move_y == 0
+    case event.key
+    when 'w'
+      @player.move_y -= 1
+    when 'a'
+      @player.move_x -= 1
+    when 's'
+      @player.move_y += 1 
+    when 'd'
+      @player.move_x += 1
+    end
+  end
+end
+
+on :key_up do |event|
+  if event.key == "w" && @player.move_y == -1 
+    @player.move_y = 0
+  elsif event.key == "s" && @player.move_y == 1
+    @player.move_y = 0
+  elsif event.key == "a" && @player.move_x == -1
+    @player.move_x = 0
+  elsif event.key == "d" && @player.move_x == 1
+    @player.move_x = 0
+  end
+end
+
+#Tile map
+
+TILE_SIZE = SIZE
+tile_map = [
+  [1, 1, 1, 1],
+  [1, 0, 0, 1],
+  [1, 0, 0, 1],
+  [1, 1, 1, 1]
+]
+
+y = 0
+
+while y < tile_map.length
+  row = tile_map[y]
+  x = 0
+  while x < row.length
+    tile = row[x]
+    if tile == 1
+      Square.new(
+        x: x*TILE_SIZE, y: y*TILE_SIZE,
+        size: TILE_SIZE,
+        color: "white",
+      )
+    end
+    x += 1
+  end
+  y += 1
 end
 
 update do
-  @player.x += @x_speed
-  @player.y += @y_speed
-  if @player.x >= (get width:) || @player.x <= 0
-    player_speed = 0
-  end
+  p "#{@player.move_x}, #{@player.move_y}"
+  @player.update()
+  '''
+  player_outside_window(@player.x, 800, 0)
+  player_outside_window(@player.y, 600, 0)'''
+  player_move(@player.hitbox.x, @player.hitbox.x, 800, 0)
+  player_move(@player.hitbox.y, @player.hitbox.y, 600, 0)
 end
 
 show
+
