@@ -113,8 +113,8 @@ $tile_map.each_with_index do |row, y|
         color: "white",
       )
     elsif tile == 2
-      @player.x_pos = x*SIZE
-      @player.y_pos = y*SIZE
+      @player.x_pos = x
+      @player.y_pos = y
     end
     
   end
