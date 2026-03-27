@@ -1,5 +1,6 @@
 require 'ruby2d'
 require_relative 'player.rb'
+require_relative 'blocks.rb'
 
 #Window settings 
 set title: "Puzzle game", 
@@ -27,7 +28,17 @@ end
 
 
 
-@player = Player.new()
+
+$blocks = [] # [Block.new(6,7), Laser.new(2,2,1,0)]
+
+def get_block(x, y)
+  $blocks.each do |block|
+    if block.x_pos == x && block.y_pos == y
+      return block
+    end
+  end
+  return nil
+end
 
 
 =begin on :key_held do |event|
@@ -89,16 +100,18 @@ end
 #Tile map
 
 TILE_SIZE = SIZE
+L = 5
+D = 4
 $tile_map = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+  [1, 1, 1, 1, 1, 1, 1, D, D, 1, 1, 1, 1, 1, 1, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+  [1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,], #row 5 index 7 is player start pos
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+  [1, 0, 0, 0, 0, 0, 0, L, 0, 0, 3, 0, 0, 0, 0, 1,],
+  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
@@ -107,23 +120,35 @@ $tile_map = [
 $tile_map.each_with_index do |row, y|
   row.each_with_index do |tile, x|
     if tile == 1
+      $blocks << Block.new(x,y, "white", false)
+
+    elsif tile == 2
+      @player = Player.new(x, y)
+    elsif tile == 3
+      $blocks << Block.new(x, y, "red", true)
+
+    elsif tile == D
       Square.new(
         x: x*TILE_SIZE, y: y*TILE_SIZE,
         size: TILE_SIZE,
-        color: "white",
+        color: "black",
       )
-    elsif tile == 2
-      @player.x_pos = x
-      @player.y_pos = y
+    elsif tile == L
+      $blocks << Laser.new(x, y, 0, 1)
     end
     
   end
 end
 
+
+
 update do
 =begin p "#{@player.move_x}, #{@player.move_y}" 
 =end
   @player.update()
+  # $blocks[0].update(@player.move_x, @player.move_y)
+  #p $tile_map[5][7]
+  #p $tile_map[5][8]
 end
 
 show
