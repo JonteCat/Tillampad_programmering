@@ -5,7 +5,7 @@ class Player
 
   def initialize(x, y)
     # @hitbox = Square.new(x: SIZE*4, y: SIZE*3, size: SIZE, color: 'blue', z: 500)
-    @hitbox = Image.new("img/why.jpg", x: x*SIZE, y: y*SIZE, width: SIZE, height: SIZE)
+    @hitbox = Image.new("img/why.jpg", x: x*SIZE, y: y*SIZE, width: SIZE, height: SIZE, z: 500)
     @move_x = 0
     @move_y = 0
     @x_pos = x
@@ -22,10 +22,11 @@ class Player
       #p new_y
       #
       next_block = get_block(new_x, new_y)
+      next_block_after = get_block(new_x + @move_x, new_y + @move_y)
 
-      if next_block == nil
+      if next_block == nil || next_block.passthrough == true
         move(new_x, new_y)
-      elsif next_block.pushable == true && get_block(new_x + @move_x, new_y + @move_y) == nil
+      elsif next_block.pushable == true && next_block_after == nil || next_block.pushable == true && next_block_after.passthrough == true
         move(new_x, new_y)
         next_block.push(@move_x, @move_y)
       end
@@ -33,7 +34,7 @@ class Player
     end
   end
 
-  def pull_object(x,y)
+  def pull_object(x, y)
     
   end
 

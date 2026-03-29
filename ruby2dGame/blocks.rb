@@ -1,12 +1,13 @@
 class Block
     
-  attr_accessor :rect, :x_pos, :y_pos, :pushable
+  attr_accessor :rect, :x_pos, :y_pos, :pushable, :passthrough
 
-  def initialize(x_pos, y_pos, color, pushable)
+  def initialize(x_pos, y_pos, color, pushable, passthrough)
     @x_pos = x_pos
     @y_pos = y_pos
     @rect = Square.new(x: SIZE*x_pos, y: SIZE*y_pos, size: SIZE, color: color, z: 10)
     @pushable = pushable
+    @passthrough = passthrough
   end
 
   def update(player_x, player_y)
@@ -41,10 +42,9 @@ end
 class Laser < Block
   
   def initialize(x_pos, y_pos, x_dir, y_dir) 
-    super(x_pos, y_pos, "blue", true)
+    super(x_pos, y_pos, "blue", false, true)
     @x_dir = 0
     @y_dir = 0
-    @pushable = false
 
   end
 
@@ -52,5 +52,31 @@ class Laser < Block
 end
 
 class Button < Block
-    super(x_pos, y_pos, "purple", false)
+
+  attr_accessor :pressed
+
+  def initialize(x_pos, y_pos, pressed)
+    super(x_pos, y_pos, "purple", false, true)
+    @pressed = pressed
+  end
+  
+
+  def state_pressed()
+        
+
+    if get_block()
+            
+    end
+  end
+end
+
+class Door < Block
+    
+  attr_accessor :go_to_next_room
+  
+  def initialize(x_pos, y_pos, go_to_next_room)
+    super(x_pos, y_pos, "black", false, false)
+    @go_to_next_room = go_to_next_room
+  end
+  
 end

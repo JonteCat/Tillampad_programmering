@@ -31,6 +31,11 @@ end
 
 $blocks = [] # [Block.new(6,7), Laser.new(2,2,1,0)]
 
+# This function gets the type of block
+# 
+#Parameters: the blocks x and y value
+#
+#Returns: the block
 def get_block(x, y)
   $blocks.each do |block|
     if block.x_pos == x && block.y_pos == y
@@ -100,18 +105,20 @@ end
 #Tile map
 
 TILE_SIZE = SIZE
-L = 5
+
 D = 4
+L = 5
+B = 6
 $tile_map = [
   [1, 1, 1, 1, 1, 1, 1, D, D, 1, 1, 1, 1, 1, 1, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,], #row 5 index 7 is player start pos
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+  [1, 0, 0, 0, 0, B, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,], #row 5 index 7 is player start pos
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, L, 0, 0, 3, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
@@ -120,21 +127,21 @@ $tile_map = [
 $tile_map.each_with_index do |row, y|
   row.each_with_index do |tile, x|
     if tile == 1
-      $blocks << Block.new(x,y, "white", false)
+      $blocks << Block.new(x,y, "white", false, false)
 
     elsif tile == 2
       @player = Player.new(x, y)
     elsif tile == 3
-      $blocks << Block.new(x, y, "red", true)
+      $blocks << Block.new(x, y, "red", true, false)
 
     elsif tile == D
-      Square.new(
-        x: x*TILE_SIZE, y: y*TILE_SIZE,
-        size: TILE_SIZE,
-        color: "black",
-      )
+      $blocks << Door.new(x, y, false)
+
     elsif tile == L
       $blocks << Laser.new(x, y, 0, 1)
+
+    elsif tile == B
+      $blocks << Button.new(x, y, false)
     end
     
   end
