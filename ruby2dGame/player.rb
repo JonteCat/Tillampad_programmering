@@ -21,15 +21,34 @@ class Player
       #p new_x
       #p new_y
       #
-      next_block = get_block(new_x, new_y)
-      next_block_after = get_block(new_x + @move_x, new_y + @move_y)
+      next_block = get_block(new_x, new_y, nil)
+      next_block_after = get_block(new_x + @move_x, new_y + @move_y, nil)
+      is_button = get_block(new_x + @move_x, new_y + @move_y, Button)
+          
 
       if next_block == nil || next_block.passthrough == true
         move(new_x, new_y)
-      elsif next_block.pushable == true && next_block_after == nil || next_block.pushable == true && next_block_after.passthrough == true
+      elsif next_block.pushable == true || is_button
         move(new_x, new_y)
         next_block.push(@move_x, @move_y)
       end
+
+
+      #Tests
+      
+      if get_block(new_x, new_y, Button)
+        puts "I am button"
+      end
+
+      if get_block(new_x, new_y, Block)
+        puts "I am block"
+      end
+
+      #if Button.pressed()
+       # puts "pressed"
+      #end
+
+
 
     end
   end

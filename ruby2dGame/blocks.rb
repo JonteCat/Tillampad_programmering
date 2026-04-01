@@ -12,18 +12,7 @@ class Block
 
   def update(player_x, player_y)
     if Window.frames % 10 == 0
-      
-=begin new_x = @x_pos + player_x
-      new_y = @y_pos + player_y
-      if $tile_map[new_y][new_x] != 1
-        $tile_map[@y_pos][@x_pos] = 0
-        @x_pos = new_x
-        @y_pos = new_y
-        @rect.x = @x_pos * SIZE
-        @rect.y = @y_pos * SIZE
-        $tile_map[@y_pos][@x_pos] = 3
-      end 
-=end
+    
     
     end
   end
@@ -59,24 +48,28 @@ class Button < Block
     super(x_pos, y_pos, "purple", false, true)
     @pressed = pressed
   end
-  
 
-  def state_pressed()
+  def pressed()
         
-
-    if get_block()
-            
+    if get_block(@x_pos, @y_pos, Button) != Button
+      @passthrough = false
+      return true
+    else 
+      @passthrough = true
+      return false
     end
+    return false
   end
 end
 
 class Door < Block
     
-  attr_accessor :go_to_next_room
-  
-  def initialize(x_pos, y_pos, go_to_next_room)
+  attr_accessor :go_to_next_room, :state
+
+  def initialize(x_pos, y_pos, go_to_next_room, state)
     super(x_pos, y_pos, "black", false, false)
     @go_to_next_room = go_to_next_room
+    @state = state
   end
   
 end

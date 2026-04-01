@@ -1,4 +1,5 @@
 require 'ruby2d'
+#require 'tmx'
 require_relative 'player.rb'
 require_relative 'blocks.rb'
 
@@ -33,12 +34,12 @@ $blocks = [] # [Block.new(6,7), Laser.new(2,2,1,0)]
 
 # This function gets the type of block
 # 
-#Parameters: the blocks x and y value
+#
 #
 #Returns: the block
-def get_block(x, y)
+def get_block(x, y, type)
   $blocks.each do |block|
-    if block.x_pos == x && block.y_pos == y
+    if block.x_pos == x && block.y_pos == y && (type == block.class || type == nil)
       return block
     end
   end
@@ -106,6 +107,8 @@ end
 
 TILE_SIZE = SIZE
 
+# map = Tmx.load(myfilepath)
+
 D = 4
 L = 5
 B = 6
@@ -135,7 +138,7 @@ $tile_map.each_with_index do |row, y|
       $blocks << Block.new(x, y, "red", true, false)
 
     elsif tile == D
-      $blocks << Door.new(x, y, false)
+      $blocks << Door.new(x, y, false, "closed")
 
     elsif tile == L
       $blocks << Laser.new(x, y, 0, 1)
