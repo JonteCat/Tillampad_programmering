@@ -1,5 +1,5 @@
 require 'ruby2d'
-#require 'tmx'
+require 'tmx'
 require_relative 'player.rb'
 require_relative 'blocks.rb'
 
@@ -107,7 +107,16 @@ end
 
 TILE_SIZE = SIZE
 
-# map = Tmx.load(myfilepath)
+myfilepath = "room_1.tmx"
+
+map = Tmx.load(myfilepath)
+
+
+#p map.methods
+
+#p map.layers
+
+p map.properties
 
 D = 4
 L = 5

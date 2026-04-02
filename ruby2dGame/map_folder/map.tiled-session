@@ -1,0 +1,35 @@
+{
+    "activeFile": "room_1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "img/map_v1.tsx": {
+            "scaleInDock": 2.29,
+            "scaleInEditor": 1
+        },
+        "room_1.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 119.33333333333333,
+                "y": 74.16666666666669
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/jonathan.wiklund1/Documents/GitHub/Tillampad_programmering/ruby2dGame/img",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "room_1.tmx",
+        "img/map_v1.tsx"
+    ],
+    "project": "map.tiled-project",
+    "recentFiles": [
+        "img/map_v1.tsx",
+        "room_1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

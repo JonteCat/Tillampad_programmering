@@ -1,12 +1,28 @@
 {
-    "activeFile": "",
     "expandedProjectPaths": [
+        "img",
+        "."
     ],
     "fileStates": {
+        "img/map_v1.tsx": {
+            "scaleInDock": 2.29,
+            "scaleInEditor": 1
+        },
+        "room_1.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 140,
+                "y": 95.625
+            }
+        }
     },
     "openFiles": [
+        "room_1.tmx",
+        "img/map_v1.tsx"
     ],
-    "project": "map.tiled-project",
     "recentFiles": [
+        "img/map_v1.tsx",
+        "room_1.tmx"
     ]
 }
