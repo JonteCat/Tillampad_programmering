@@ -26,7 +26,7 @@ class Player
       is_button = get_block(new_x + @move_x, new_y + @move_y, Button)
           
 
-      if next_block == nil || next_block.passthrough == true
+      if next_block == nil || (next_block.passthrough == true)# && get_block(new_x, new_y, Block) == false)
         move(new_x, new_y)
       elsif next_block.pushable == true || is_button
         move(new_x, new_y)

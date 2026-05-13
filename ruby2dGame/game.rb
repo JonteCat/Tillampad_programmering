@@ -1,19 +1,26 @@
 require 'ruby2d'
 require 'tmx'
-require_relative 'player.rb'
+# require_relative 'player.rb'
 require_relative 'blocks.rb'
+require_relative 'new_player.rb'
+
+# require_relative 'map.rb'
 
 #Window settings 
 set title: "Puzzle game", 
 fullscreen: false,
 background: "#5e02a1",
 width: 800,
-viewport_width: 640,
-viewport_height: 480
+viewport_width: 512
 
-set height: Window.width*3/4
-  SIZE = Window.width/20
+set height: Window.width*3/4,
+viewport_height: Window.viewport_width*3/4
+  SIZE = Window.viewport_width/16
+  SCALE = SIZE/16
 
+p Window.viewport_width*3/4
+
+require_relative 'map.rb'
 
 @move_xy = SIZE
 
@@ -71,17 +78,72 @@ $key = nil
 
 
 
+
+
+#Tile map
+
+TILE_SIZE = SIZE
+
+# D = 4
+# L = 5
+# B = 6
+# $tile_map = [
+#   [1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,], #row 5 index 7 is player start pos
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
+#   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
+# ]
+
+
+
+# $tile_map.each_with_index do |row, y|
+#   row.each_with_index do |tile, x|
+#     if tile == 1
+#       $blocks << Block.new(x,y, "white", false, false)
+
+#     elsif tile == 2
+#       @player = Player.new(x, y)
+#     elsif tile == 3
+#       $blocks << Block.new(x, y, "red", true, false)
+
+#     elsif tile == D
+#       $blocks << Door.new(x, y, false, "closed")
+
+#     elsif tile == L
+#       $blocks << Laser.new(x, y, 0, 1)
+
+#     elsif tile == B
+#       $blocks << Button.new(x, y, false)
+#     end
+    
+#   end
+# end
+
+@player = Player.new(8, 5)
+
 on :key_held do |event|
   if @player.move_x == 0 && @player.move_y == 0
     case event.key
     when 'w'
       @player.move_y -= 1
+      @player.sprite.play animation: :up, loop: true
     when 'a'
       @player.move_x -= 1
+      @player.sprite.play animation: :left, loop: true
     when 's'
       @player.move_y += 1 
+      @player.sprite.play animation: :down, loop: false
     when 'd'
       @player.move_x += 1
+      @player.sprite.play animation: :right, loop: true
     end
   end
 end
@@ -102,64 +164,6 @@ on :key_up do |event|
     set fullscreen: !fs
   end
 end
-
-#Tile map
-
-TILE_SIZE = SIZE
-
-myfilepath = "room_1.tmx"
-
-map = Tmx.load(myfilepath)
-
-
-#p map.methods
-
-#p map.layers
-
-p map.properties
-
-D = 4
-L = 5
-B = 6
-$tile_map = [
-  [1, 1, 1, 1, 1, 1, 1, D, D, 1, 1, 1, 1, 1, 1, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, B, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,], #row 5 index 7 is player start pos
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, L, 0, 0, 3, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
-]
-
-$tile_map.each_with_index do |row, y|
-  row.each_with_index do |tile, x|
-    if tile == 1
-      $blocks << Block.new(x,y, "white", false, false)
-
-    elsif tile == 2
-      @player = Player.new(x, y)
-    elsif tile == 3
-      $blocks << Block.new(x, y, "red", true, false)
-
-    elsif tile == D
-      $blocks << Door.new(x, y, false, "closed")
-
-    elsif tile == L
-      $blocks << Laser.new(x, y, 0, 1)
-
-    elsif tile == B
-      $blocks << Button.new(x, y, false)
-    end
-    
-  end
-end
-
-
 
 update do
 =begin p "#{@player.move_x}, #{@player.move_y}" 

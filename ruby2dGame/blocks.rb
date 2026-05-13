@@ -1,11 +1,15 @@
+require 'ruby2d'
+
 class Block
     
   attr_accessor :rect, :x_pos, :y_pos, :pushable, :passthrough
 
-  def initialize(x_pos, y_pos, color, pushable, passthrough)
+  def initialize(x_pos, y_pos, texture, pushable, passthrough)
     @x_pos = x_pos
     @y_pos = y_pos
-    @rect = Square.new(x: SIZE*x_pos, y: SIZE*y_pos, size: SIZE, color: color, z: 10)
+    # @rect = Square.new(x: SIZE*x_pos, y: SIZE*y_pos, size: SIZE, color:, z: 10)
+    # @rect = tileset.set_tile(texture, [{ x: SIZE*x_pos,  y: SIZE*y_pos }])
+    # @rect = tileset.set_tile('blue', [{ x: 16*1,  y: 16*1 }])
     @pushable = pushable
     @passthrough = passthrough
   end
