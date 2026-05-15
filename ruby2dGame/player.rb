@@ -62,7 +62,9 @@ class Player
         button.pushed?(new_x, new_y)
         $objects["boxes"].each do |box|
           button.pushed?(box.x_pos, box.y_pos)
-          box_next_tile_empty = $walls[box.y_pos+@move_y][box.x_pos+@move_x] == 0
+          if $walls[box.y_pos - @move_y][box.x_pos] == 'P' || $walls[box.y_pos][box.x_pos - @move_x] == 'P' #Checks if player is behind box
+            box_next_tile_empty = $walls[box.y_pos+@move_y][box.x_pos+@move_x] == 0 #Checks the nex tile of only the box being pushed
+          end
           if button.pushed == true
             break
           end
@@ -80,9 +82,10 @@ class Player
             move(new_x, new_y)
 
         elsif $walls[new_y][new_x] == 'B' && @pulling == false
+          p box_next_tile_empty
           if box_next_tile_empty
             $objects["boxes"].each do |box|
-              p $walls[box.y_pos - @move_y][box.x_pos] == 'P' || $walls[box.y_pos][box.x_pos - @move_x] == 'P'
+              # p $walls[box.y_pos - @move_y][box.x_pos] == 'P' || $walls[box.y_pos][box.x_pos - @move_x] == 'P'
               if $walls[box.y_pos - @move_y][box.x_pos] == 'P' || $walls[box.y_pos][box.x_pos - @move_x] == 'P'
                 @frames = -10
                 box.move(new_x+@move_x, new_y+@move_y)
@@ -91,7 +94,7 @@ class Player
             end
           end    
         end
-      end
+    end
   end
 end
 
