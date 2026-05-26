@@ -52,8 +52,8 @@ class Player
     @frames += 1
     
     if (@move_x != 0 or @move_y != 0) && @frames > 10
-            @frames = 0
-            new_x = @x_pos + @move_x
+      @frames = 0
+      new_x = @x_pos + @move_x
       new_y = @y_pos + @move_y
       player_next_tile_empty = $walls[new_y][new_x] == 0
 

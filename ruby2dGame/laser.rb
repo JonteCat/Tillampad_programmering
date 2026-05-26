@@ -98,7 +98,7 @@ def line_line_detection(laser, line, normal)
     # normal.x2 = line.x2 - line.x1 + (intersection_x - intersection_y)
     # normal.y2 = -(line.y2 - line.y1)
     # puts "#{(normal.y2 - normal.y1)/(normal.x2 - normal.x1)} #{(line.y2 - line.y1)/(line.x2 - line.x1)}"
-
+  
     l_deg = Math.atan2(line.y2 - line.y1, line.x2 - line.x1)*TO_DEG + 90
     n_deg = Math.atan2(normal.y2 - normal.y1, normal.x2 - normal.x1)*TO_DEG + 90
     laser_deg = Math.atan2(laser.y2 - laser.y1, laser.x2 - laser.x1)*TO_DEG + 90
@@ -117,8 +117,20 @@ def line_line_detection(laser, line, normal)
     # p v1
     v2 =  180 - v1
 
-    normal.x2 = Math.cos(v1/TO_DEG)*100+200
-    normal.y2 = Math.sin(v1/TO_DEG)*100+200
+    nx = -(line.y2-line.y1)
+    ny = (line.x2-line.x1)
+
+    dx = laser.x2 - laser.x1
+    dy = laser.y1 - laser.y1
+
+    normal.x2 = -(line.y2-line.y1)*50 + normal.x1
+    normal.y2 = (line.x2-line.x1)*50 + normal.y1
+    # r=d−2(d⋅n)n
+    rx = dx - 2*()
+    
+
+    # normal.x2 = Math.cos(v1/TO_DEG)*100+200
+    # normal.y2 = Math.sin(v1/TO_DEG)*100+200
     p v2
 
     # p 180 - laser_deg + n_deg
